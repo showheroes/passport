@@ -1,0 +1,57 @@
+version: "3.7"
+services:
+  passport-service-testing:
+    build:
+      context: ../../
+      dockerfile: "docker/passport-testing.Dockerfile"
+      args:
+        COMPOSER_AUTH: ${COMPOSER_AUTH}
+    image: showheroes/passport-testing-service-php
+    environment:
+      APP_ENV: "testing"
+      APP_DEBUG: "true"
+      APP_KEY: "base64:XWeEXrWiWiD1rbzBVFCF8coXc7+ZxEuhON8smjCG9QA="
+      DB_PASSWORD: secret
+      DB_DATABASE: sh_passport_testing
+      DB_USERNAME: test_user
+      DB_HOST: passport-service-testing-database
+    container_name: passport-testing-service-php
+    tty: true
+    restart: unless-stopped
+    working_dir: /www/app
+    volumes:
+      - /tmp/test_output:/www/app/test_output
+    networks:
+      - app-network
+    ports:
+      - "80:80"
+      - "8125:8125/udp"
+    depends_on:
+      - passport-service-testing-cache
+      - passport-service-testing-database
+  passport-service-testing-cache:
+    image: redis:4.0-alpine
+    container_name: passport-service-testing-cache
+    restart: unless-stopped
+    expose:
+      - "6379"
+    networks:
+      - app-network
+  passport-service-testing-database:
+    image: mariadb:10.7.1
+    environment:
+      MARIADB_ROOT_PASSWORD: secret
+      MARIADB_PASSWORD: secret
+      MARIADB_DATABASE: sh_passport_testing
+      MARIADB_USER: test_user
+    container_name: passport-service-testing-database
+    restart: unless-stopped
+    volumes:
+      - ./sql_dumps:/docker-entrypoint-initdb.d
+    expose:
+      - "3306"
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge

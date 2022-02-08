@@ -1,0 +1,56 @@
+version: "3.7"
+services:
+  passport-service:
+    build:
+      context: ../../
+      dockerfile: "docker/passport-development.Dockerfile"
+    image: showheroes/passport-service-php
+    volumes:
+      - ../../:/www/app
+    env_file:
+      - ../../.env
+      - .env
+    environment:
+      DB_HOST: passport-service-database
+      DB_DATABASE: passport
+      DB_USERNAME: homestead
+      DB_PASSWORD: secret
+    container_name: passport-dev-service-php
+    tty: true
+    restart: unless-stopped
+    working_dir: /www/app
+    networks:
+      - app-network
+    ports:
+      - "80:80"
+      - "8125:8125/udp"
+  passport-service-cache:
+    image: redis:4.0-alpine
+    container_name: passport-service-cache
+    restart: unless-stopped
+    env_file:
+      - ../../.env
+    expose:
+      - "6379"
+    networks:
+      - app-network
+  passport-service-database:
+    image: mariadb:10.3
+    environment:
+      MARIADB_ROOT_PASSWORD: secret
+      MARIADB_DATABASE: passport
+      MARIADB_USER: homestead
+      MARIADB_PASSWORD: secret
+    container_name: passport-service-database
+    restart: unless-stopped
+    volumes:
+      - ./sql_dumps:/docker-entrypoint-initdb.d
+    expose:
+      - "3306"
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
