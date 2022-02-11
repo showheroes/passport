@@ -46,6 +46,7 @@ class GoogleGateway
             if (!isset($matches[1]) || empty($matches[1])) {
                 throw new LoginAuthorisation('Domain is not available for automatic log in.');
             }
+
             $mailDomain = $this->getOriginalFromAlias($matches[1]);
 
             /** @var TeamSettings|null $teamSettings */
@@ -56,7 +57,7 @@ class GoogleGateway
             if (!$teamSettings) {
                 throw new LoginAuthorisation('Domain doesn\'t match to any of existing teams.');
             }
-            $team = $teamSettings->team;
+            $team = $teamSettings->team();
         } else {
             $team = $user->currentTeam();
         }
@@ -88,6 +89,7 @@ class GoogleGateway
             $googleOriginalAvatarURL = $googleUser->avatar_original ?? '';
             if ($googleOriginalAvatarURL) {
                 $avatarContent = file_get_contents($googleOriginalAvatarURL);
+
                 if (!empty($avatarContent)) {
                     $extension = 'jpg';
                     $urlParts = parse_url($googleOriginalAvatarURL);
@@ -117,7 +119,7 @@ class GoogleGateway
                     [
                         'user_id' => $user->id,
                         'team_id' => $team->id,
-                        'role' => '',
+                        'role' => 'member',
                     ]
                 );
         }

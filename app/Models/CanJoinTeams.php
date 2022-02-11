@@ -139,7 +139,7 @@ trait CanJoinTeams
      * @param Team $team
      * @return void
      */
-    public function switchToTeam($team): void
+    public function switchToTeam(Team $team): void
     {
         if (!$this->onTeam($team)) {
             throw new InvalidArgumentException("The user does not belong to the given team.");
