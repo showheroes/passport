@@ -2,7 +2,7 @@
 
 namespace ShowHeroes\Passport\Tests\Feature;
 
-use ShowHeroes\Passport\Models\Team;
+use ShowHeroes\Passport\Models\Teams\Team;
 use ShowHeroes\Passport\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Jetstream\Http\Livewire\DeleteTeamForm;

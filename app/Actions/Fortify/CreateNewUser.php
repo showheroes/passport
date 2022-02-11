@@ -2,7 +2,7 @@
 
 namespace ShowHeroes\Passport\Actions\Fortify;
 
-use ShowHeroes\Passport\Models\Team;
+use ShowHeroes\Passport\Models\Teams\Team;
 use ShowHeroes\Passport\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;

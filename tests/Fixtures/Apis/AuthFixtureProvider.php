@@ -3,7 +3,7 @@
 namespace ShowHeroes\Passport\Tests\Fixtures\Apis;
 
 use Illuminate\Contracts\Auth\Authenticatable;
-use ShowHeroes\Passport\Models\Team;
+use ShowHeroes\Passport\Models\Teams\Team;
 use ShowHeroes\Passport\Models\User;
 
 /**

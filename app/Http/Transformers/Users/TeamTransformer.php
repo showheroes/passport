@@ -4,7 +4,7 @@ namespace ShowHeroes\Passport\Http\Transformers\Users;
 
 use EvgenyL\RestAPICore\Http\Transformers\FormatDates;
 use League\Fractal\TransformerAbstract;
-use ShowHeroes\Passport\Models\Team;
+use ShowHeroes\Passport\Models\Teams\Team;
 
 /**
  * @OA\Schema(

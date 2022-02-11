@@ -3,10 +3,10 @@
 namespace ShowHeroes\Passport\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
-use ShowHeroes\Passport\Actions\Jetstream\AddTeamMember;
-use ShowHeroes\Passport\Models\Team;
+use ShowHeroes\Passport\Models\Teams\Team;
 use ShowHeroes\Passport\Models\User;
 use Laravel\Socialite\Facades\Socialite;
+use ShowHeroes\Passport\Actions\Jetstream\AddTeamMember;
 
 class OAuthController extends Controller
 {

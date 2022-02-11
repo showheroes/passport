@@ -42,9 +42,9 @@ class JetstreamServiceProvider extends ServiceProvider
         Jetstream::deleteUsersUsing(DeleteUser::class);
 
         Jetstream::useUserModel('ShowHeroes\Passport\Models\User');
-        Jetstream::useTeamModel('ShowHeroes\Passport\Models\Team');
-        Jetstream::useMembershipModel('ShowHeroes\Passport\Models\Membership');
-        Jetstream::useTeamInvitationModel('ShowHeroes\Passport\Models\TeamInvitation');
+        Jetstream::useTeamModel('ShowHeroes\Passport\Models\Teams\Team');
+       // Jetstream::useMembershipModel('ShowHeroes\Passport\Models\Teams\Membership');
+      //  Jetstream::useTeamInvitationModel('ShowHeroes\Passport\Models\Teams\TeamInvitation');
     }
 
     /**

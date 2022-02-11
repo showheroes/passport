@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/auth/google/login', 'Auth\GoogleController@redirect_to_google_provider')->middleware(['guest'])->name('web.auth.google.login');
+Route::get('/auth/google/callback', 'Auth\GoogleController@handle_google_provider_callback')->middleware(['guest'])->name('web.auth.google.callback');
+
 Route::group(['middleware' => ['guest']], function ($router) {
     /** @var \Illuminate\Routing\Router $router */
     $router->get('/', function () {

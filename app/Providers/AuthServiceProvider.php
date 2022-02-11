@@ -2,7 +2,7 @@
 
 namespace ShowHeroes\Passport\Providers;
 
-use ShowHeroes\Passport\Models\Team;
+use ShowHeroes\Passport\Models\Teams\Team;
 use ShowHeroes\Passport\Models\User;
 use ShowHeroes\Passport\Policies\Users\TeamPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;

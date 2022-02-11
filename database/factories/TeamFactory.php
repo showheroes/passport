@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use ShowHeroes\Passport\Models\Team;
+use ShowHeroes\Passport\Models\Teams\Team;
 use ShowHeroes\Passport\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

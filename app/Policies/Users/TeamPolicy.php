@@ -2,7 +2,7 @@
 
 namespace ShowHeroes\Passport\Policies\Users;
 
-use ShowHeroes\Passport\Models\Team;
+use ShowHeroes\Passport\Models\Teams\Team;
 use ShowHeroes\Passport\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
