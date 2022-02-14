@@ -3,6 +3,7 @@
 namespace ShowHeroes\Passport\Models\Teams;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use ShowHeroes\Passport\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -12,7 +13,6 @@ use Laravel\Jetstream\Events\TeamUpdated;
 use Laravel\Jetstream\Team as JetstreamTeam;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use ShowHeroes\Passport\Models\Teams\TeamSettings;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use ShowHeroes\Passport\Http\Gateways\Teams\TeamGateway;
 
@@ -76,7 +76,7 @@ class Team extends JetstreamTeam
         'deleted' => TeamDeleted::class,
     ];
 
-    protected $dates = ['created_at', 'updated_at'];
+    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
 
     public const VERIFICATION_UNVERIFIED = 0;
@@ -151,6 +151,23 @@ class Team extends JetstreamTeam
 
         return $this;
     }
+
+
+    /**
+     * Get all of the users that the user belongs to.
+     */
+    public function users(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            User::class,
+            'team_user',
+            'user_id',
+            'team_id'
+        )
+            ->withPivot(['role'])
+            ->orderBy('name');
+    }
+
     /**
      * Returns user, who is responsible for the Team management.
      *

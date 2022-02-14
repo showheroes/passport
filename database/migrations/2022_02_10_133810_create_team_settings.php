@@ -18,6 +18,7 @@ return new class extends Migration
 
             $table->foreignId('team_id')->index();
             $table->text('ui_config');
+            $table->string('authorised_domain')->nullable();
             $table->boolean('ifactory_access');
             $table->boolean('adhero_access');
             $table->boolean('apollo_access');

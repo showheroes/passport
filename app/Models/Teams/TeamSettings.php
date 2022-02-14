@@ -25,6 +25,10 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  *
  * @property array|null $permissions
  *
+ * @property string|null $authorised_domain          Emails from this domain will be automatically joined to related teams.
+ *
+ * @property Team $team
+ *
  * @property Carbon $created_at
  * @property Carbon $updated_at
  */
@@ -46,7 +50,7 @@ class TeamSettings extends Model
         // Admin specific settings.
         'adhero_access', 'apollo_access', 'ifactory_access', 'creative_studio_access',
         // Others
-        'redirect_to_platform_enabled'
+        'redirect_to_platform_enabled', 'authorised_domain '
     ];
 
     protected $casts = [

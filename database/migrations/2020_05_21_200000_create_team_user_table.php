@@ -19,7 +19,7 @@ class CreateTeamUserTable extends Migration
             $table->foreignId('user_id');
             $table->string('role')->nullable();
             $table->timestamps();
-
+            $table->timestamp('deleted_at')->nullable();
             $table->unique(['team_id', 'user_id']);
         });
     }

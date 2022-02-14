@@ -22,7 +22,7 @@ trait CanJoinTeams
      */
     #[Pure] public function hasTeams(): bool
     {
-        return count($this->teams) > 0;
+        return $this->teams()->count() > 0;
     }
 
     /**
@@ -31,12 +31,12 @@ trait CanJoinTeams
     public function teams(): BelongsToMany
     {
         return $this->belongsToMany(
-            Membership::class,
-            'team_users',
+            Team::class,
+            'team_user',
             'user_id',
             'team_id'
         )
-            ->withPivot(['role'])
+           ->withPivot(['role'])
             ->orderBy('name');
     }
 
@@ -48,29 +48,20 @@ trait CanJoinTeams
      */
     public function onTeam(Team $team): bool
     {
+        return $this->teams->contains($team);
+    }
+
+    /**
+     * @param User $user
+     * @return int
+     */
+    public function onTeamByUserId(User $user): int
+    {
         return Membership::query()
-            ->where('team_id', $team->id)
-            ->exists();
+            ->where('team_id', $user->id)
+            ->count();
     }
 
-    /**
-     * Determine if the given team is owned by the user.
-     *
-     * @param Team $team
-     * @return bool
-     */
-    public function ownsTeam(Team $team): bool
-    {
-        return $this->id && $team->owner_id && $this->id === $team->owner_id;
-    }
-
-    /**
-     * Get all of the teams that the user owns.
-     */
-    public function ownedTeams(): BelongsToMany
-    {
-        return $this->teams()->where('owner_id', $this->getKey());
-    }
 
     /**
      * Get the user's role on a given team.
@@ -142,7 +133,7 @@ trait CanJoinTeams
     public function switchToTeam(Team $team): void
     {
         if (!$this->onTeam($team)) {
-            throw new InvalidArgumentException("The user does not belong to the given team.");
+            throw new InvalidArgumentException("The user is not belong to the default team.");
         }
 
         $this->current_team_id = $team->id;
@@ -153,9 +144,9 @@ trait CanJoinTeams
     /**
      * Refresh the current team for the user.
      *
-     * @return Model|Team
+     * @return Model|Team|null
      */
-    public function refreshCurrentTeam()
+    public function refreshCurrentTeam(): Model|Team|null
     {
         $this->current_team_id = null;
 

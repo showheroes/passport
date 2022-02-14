@@ -29,7 +29,7 @@ class Membership extends JetstreamMembership
      */
     public $incrementing = true;
 
-
+    protected $table = 'team_user';
     /**
      * The attributes that are mass assignable.
      *

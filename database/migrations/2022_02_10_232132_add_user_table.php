@@ -10,7 +10,8 @@ return new class extends Migration {
         Schema::table(
             'users',
             function (Blueprint $table) {
-                $table->string('timezone');
+                $table->string('timezone')
+                    ->nullable();
 
                 $table->string('photo_url')
                     ->nullable();
@@ -31,7 +32,8 @@ return new class extends Migration {
                     ->nullable();
 
                 $table->timestamp('last_read_announcements_at')->nullable()->after('updated_at');
-            });
+            }
+        );
     }
 
     /**
@@ -54,6 +56,7 @@ return new class extends Migration {
                     'default_locale',
                     'last_read_announcements_at'
                 );
-            });
+            }
+        );
     }
 };

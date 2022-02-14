@@ -44,7 +44,7 @@ use ShowHeroes\Passport\Models\GoogleEntities\GoogleAuth;
  * @property Team[] $teams
  * @property GoogleAuth[]|Collection $google_auth
  *
- * @method Team currentTeam() Current user team. See parent method.
+ * @method Team $currentTeam Current user team. See parent method.
  *
  * @mixin Builder
  */
@@ -81,6 +81,7 @@ class User extends Authenticatable
         'name',
         'email',
         'default_locale',
+        'password'
     ];
 
     /**

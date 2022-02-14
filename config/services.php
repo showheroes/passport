@@ -31,8 +31,22 @@ return [
     ],
 
     'google' => [
-        'client_id'     => env('GOOGLE_CLIENT_ID'),
-        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-        'redirect'      => env('GOOGLE_REDIRECT', env('APP_PROTOCOL', 'https').'://'.env('APP_URL', 'PROJECT_DOMAIN.showheroes.com').'/auth/login/google/callback'),
+        'client_id'     => '1028712062944-n56p3efq8m2u5fu6707f478vtqis24ou.apps.googleusercontent.com',
+        'client_secret' => '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',
+        'redirect'      => 'http://localhost/auth/google/callback'
     ],
+
+    'default_team_ui_colors' => [
+        'header_bg_color' => '#00c3dd',
+        'primary_light_color' => '#00c3dd',
+        'hamburger_bg_color' => '#fc34be',
+        'hamburger_bg_dark_color' => '#385c66',
+        'menu_highlight_color' => '#feff78',
+        'menu_highlight_dark_color' => '#00c4e0',
+    ],
+
+    'allow_domains' => [
+        'showheroes.com',
+        'showheroes-group.com'
+    ]
 ];

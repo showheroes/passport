@@ -176,7 +176,8 @@ return [
         ShowHeroes\Passport\Providers\RouteServiceProvider::class,
         ShowHeroes\Passport\Providers\FortifyServiceProvider::class,
         ShowHeroes\Passport\Providers\JetstreamServiceProvider::class,
-
+        ShowHeroes\Passport\Providers\GoogleServiceProvider::class,
+        SocialiteProviders\Manager\ServiceProvider::class,
     ],
 
     /*

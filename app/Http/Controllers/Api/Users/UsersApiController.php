@@ -2,11 +2,11 @@
 
 namespace ShowHeroes\Passport\Http\Controllers\Api\Users;
 
-use EvgenyL\RestAPICore\Http\Responses\FormattedJSONResponse;
-use ShowHeroes\Passport\Http\Controllers\Api\ApiController;
-use ShowHeroes\Passport\Http\Requests\Api\ApiRequest;
-use ShowHeroes\Passport\Http\Transformers\Users\UserTransformer;
 use ShowHeroes\Passport\Models\User;
+use ShowHeroes\Passport\Http\Requests\Api\ApiRequest;
+use ShowHeroes\Passport\Http\Controllers\Api\ApiController;
+use EvgenyL\RestAPICore\Http\Responses\FormattedJSONResponse;
+use ShowHeroes\Passport\Http\Transformers\Users\UserTransformer;
 
 /**
  * Class UsersApiController
@@ -106,5 +106,4 @@ class UsersApiController extends ApiController
         $data = $this->convertModelJsonData($request, $model);
         return FormattedJsonResponse::show($data);
     }
-
 }

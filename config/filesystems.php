@@ -42,6 +42,13 @@ return [
             'visibility' => 'public',
         ],
 
+        'users_images' => [
+            'driver' => 'local',
+            'url' => env('APP_URL').'/storage/users_images',
+            'root' => storage_path('app/public/users_images'),
+            'visibility' => 'public',
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

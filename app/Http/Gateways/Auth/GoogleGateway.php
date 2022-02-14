@@ -2,18 +2,28 @@
 
 namespace ShowHeroes\Passport\Http\Gateways\Auth;
 
-use Carbon\Carbon;
+use ShowHeroes\Passport\Models\User;
 use Illuminate\Support\Facades\Storage;
 use ShowHeroes\Passport\Models\Teams\Membership;
-use ShowHeroes\Passport\Models\User;
 use ShowHeroes\Passport\Models\Teams\TeamSettings;
-use ShowHeroes\Passport\Http\Requests\ApiRequest;
-use ShowHeroes\Passport\Models\GoogleEntities\GoogleAuth;
 use ShowHeroes\Passport\Exceptions\Auth\LoginAuthorisation;
-use ShowHeroes\Passport\Notifications\Registration\WelcomeToATeamAfterGoogleAuth;
 
+/**
+ * Class GoogleGateway
+ * @package ShowHeroes\Passport\Http\Gateways\Auth
+ */
 class GoogleGateway
 {
+    public const USER_PHOTO_PATH = '/users/avatars/user';
+    public const TIME_ZONE = 'Europe/Berlin';
+
+    public const MAIN_DOMAIN = 'showheroes.com';
+
+    public const EXCEPTION_EMAIL = 'Email is forbidden for automatic authorisation.';
+    public const EXCEPTION_DOMAIN = 'Domain is not available for automatic log in.';
+    public const EXCEPTION_DOMAIN_TEAM = 'Domain doesn\'t match to any of existing teams.';
+    public const EXCEPTION_RELATED_TEAM = 'Related team not found.';
+
     private array $exceptionEmails = [
         'webedia@showheroes.com',
         'do-not-reply@showheroes.com',
@@ -33,7 +43,7 @@ class GoogleGateway
         $email = $googleUser->getEmail();
 
         if (in_array($email, $this->exceptionEmails, true)) {
-            throw new LoginAuthorisation('Email is forbidden for automatic authorisation.');
+            throw new LoginAuthorisation(self::EXCEPTION_EMAIL);
         }
 
         /** @var User|null $user */
@@ -43,9 +53,11 @@ class GoogleGateway
 
         if (!$user) {
             preg_match('|@(.*)$|iu', $email, $matches);
+
             if (!isset($matches[1]) || empty($matches[1])) {
-                throw new LoginAuthorisation('Domain is not available for automatic log in.');
+                throw new LoginAuthorisation(self::EXCEPTION_DOMAIN);
             }
+
             $mailDomain = $this->getOriginalFromAlias($matches[1]);
 
             /** @var TeamSettings|null $teamSettings */
@@ -54,19 +66,21 @@ class GoogleGateway
                 ->first();
 
             if (!$teamSettings) {
-                throw new LoginAuthorisation('Domain doesn\'t match to any of existing teams.');
+                throw new LoginAuthorisation(self::EXCEPTION_DOMAIN_TEAM);
             }
+
             $team = $teamSettings->team;
         } else {
             $team = $user->currentTeam();
         }
 
         if (!$team) {
-            throw new LoginAuthorisation('Related team not found.');
+            throw new LoginAuthorisation(self::EXCEPTION_RELATED_TEAM);
         }
 
         $isNewUser = false;
-        $str = rand(6, 6);
+
+        $str = 'asdewq136671';
 
         if (!$user) { // Create new user with specified Google data.
             /** @var User $user */
@@ -75,32 +89,35 @@ class GoogleGateway
                     [
                         'name' => $googleUser->getName(),
                         'email' => $googleUser->getEmail(),
-                        'password' => hash("sha256", $str)
+                        'password' => $str
                     ]
                 );
 
             $isNewUser = true;
             $user->email_verified = true;
             $user->level = User::LEVEL_USER;
-            $user->timezone = 'Europe/Berlin';
+            $user->timezone = self::TIME_ZONE;
 
             // Resave photo URL.
-            $googleOriginalAvatarURL = $googleUser->avatar_original ?? '';
+            $googleOriginalAvatarURL = $googleUser->getAvatar() ?? '';
             if ($googleOriginalAvatarURL) {
                 $avatarContent = file_get_contents($googleOriginalAvatarURL);
                 if (!empty($avatarContent)) {
                     $extension = 'jpg';
                     $urlParts = parse_url($googleOriginalAvatarURL);
                     $urlPath = $urlParts['path'] ?? '';
+
                     if ($urlPath) {
                         $fileExtension = pathinfo($urlPath, PATHINFO_EXTENSION);
                         if ($fileExtension) {
                             $extension = $fileExtension;
                         }
                     }
+
                     $disk = Storage::disk('users_images');
-                    $avatarURL = '/users/avatars/u' . $user->id . '_' . hash("sha256", $str) . '.' . $extension;
+                    $avatarURL = self::USER_PHOTO_PATH . $user->id . '_' . $str . '.' . $extension;
                     $photoSaveSuccess = $disk->put($avatarURL, $avatarContent);
+
                     if ($photoSaveSuccess) {
                         $user->photo_url = $avatarURL;
                     }
@@ -110,21 +127,24 @@ class GoogleGateway
             $user->save();
         }
 
-        // Join user to a team if required.
-        if (!$user->onTeam($team)) {
-            $membership = new Membership();
-
-        }
-
         // To update current user teams before switching
         $user = $user->fresh();
 
         if ($isNewUser) {
+            Membership::query()
+                ->create(
+                    [
+                        'team_id' => $team->id,
+                        'user_id' => $user->id,
+                        'role' => 'member'
+                    ]
+                );
+
             $user->switchToTeam($team);
         }
 
         if ($isNewUser) {
-            $user->notify(new WelcomeToATeamAfterGoogleAuth($team));
+            // probably need notification or sent an email
         }
 
         return $user;
@@ -135,13 +155,18 @@ class GoogleGateway
      * Short workaround for ShowHeroes.
      *
      * @param string $domainName
-     * @return string
+     * @return string|null
      */
-    public function getOriginalFromAlias(string $domainName): string
+    public function getOriginalFromAlias(string $domainName): ?string
     {
-        if ($domainName === 'showheroes-group.com') {
-            $domainName = 'showheroes.com';
+        $allowDomains = config('services.allow_domains');
+
+        if ($allowDomains) {
+            if (in_array($domainName, $allowDomains, true)) {
+                return self::MAIN_DOMAIN;
+            }
         }
-        return $domainName;
+
+        return null;
     }
 }
