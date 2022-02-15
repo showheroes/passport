@@ -2,7 +2,9 @@
 
 namespace ShowHeroes\Passport\Http\Gateways\Auth;
 
+use Illuminate\Support\Str;
 use ShowHeroes\Passport\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use ShowHeroes\Passport\Models\Teams\Membership;
 use ShowHeroes\Passport\Models\Teams\TeamSettings;
@@ -80,7 +82,7 @@ class GoogleGateway
 
         $isNewUser = false;
 
-        $str = 'asdewq136671';
+        $str = Hash::make(Str::random(8));
 
         if (!$user) { // Create new user with specified Google data.
             /** @var User $user */
@@ -100,8 +102,10 @@ class GoogleGateway
 
             // Resave photo URL.
             $googleOriginalAvatarURL = $googleUser->getAvatar() ?? '';
+
             if ($googleOriginalAvatarURL) {
                 $avatarContent = file_get_contents($googleOriginalAvatarURL);
+
                 if (!empty($avatarContent)) {
                     $extension = 'jpg';
                     $urlParts = parse_url($googleOriginalAvatarURL);
@@ -115,7 +119,9 @@ class GoogleGateway
                     }
 
                     $disk = Storage::disk('users_images');
-                    $avatarURL = self::USER_PHOTO_PATH . $user->id . '_' . $str . '.' . $extension;
+                    $hashPath = Hash::make(Str::random(5));
+                    $avatarURL = self::USER_PHOTO_PATH . $user->id . $hashPath . '.' . $extension;
+
                     $photoSaveSuccess = $disk->put($avatarURL, $avatarContent);
 
                     if ($photoSaveSuccess) {

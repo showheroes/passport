@@ -3,7 +3,6 @@
 namespace ShowHeroes\Passport\Models\Teams;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use ShowHeroes\Passport\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -14,6 +13,7 @@ use Laravel\Jetstream\Team as JetstreamTeam;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use ShowHeroes\Passport\Http\Gateways\Teams\TeamGateway;
 
 /**
@@ -181,10 +181,12 @@ class Team extends JetstreamTeam
         // In case of non-operator team, do not notify ghosts.
         if ($this->id !== $operatorTeamID) {
             $users = $this->users;
+
             foreach ($users as $user) {
                 if ($user->isGhost()) {
                     continue;
                 }
+
                 if ($user->roleOn($this) === 'owner') {
                     $responsibleUser = $user;
                     break;

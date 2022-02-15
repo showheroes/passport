@@ -89,7 +89,5 @@ use ShowHeroes\Passport\Http\Controllers\Controller;
  */
 class ApiController extends Controller
 {
-
     use TransformsResponses;
-
 }

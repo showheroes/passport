@@ -39,8 +39,7 @@ class GoogleReportController extends Controller
     #[NoReturn] public function handle_google_provider_callback(
         GoogleGateway $googleGateway,
         Guard $guard
-    ): Response|RedirectResponse
-    {
+    ): Response|RedirectResponse {
         /** @var User $googleUser */
         $googleUser = Socialite::driver('google')->stateless()->user();
 

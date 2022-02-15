@@ -5,7 +5,7 @@ namespace ShowHeroes\Passport\Models;
 use Carbon\Carbon;
 use JetBrains\PhpStorm\Pure;
 use JetBrains\PhpStorm\ArrayShape;
-use Laravel\Passport\HasApiTokens;
+use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Jetstream\HasProfilePhoto;
 use Illuminate\Notifications\Notifiable;
