@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Laravel\Jetstream\Events\TeamCreated;
 use Laravel\Jetstream\Events\TeamDeleted;
 use Laravel\Jetstream\Events\TeamUpdated;
-use Laravel\Jetstream\Team as JetstreamTeam;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -38,7 +37,7 @@ use ShowHeroes\Passport\Http\Gateways\Teams\TeamGateway;
  *
  * @mixin Builder
  */
-class Team extends JetstreamTeam
+class Team extends Model
 {
     use HasFactory;
     use SoftDeletes;
@@ -206,5 +205,21 @@ class Team extends JetstreamTeam
         return self::query()
             ->where('id', $teamId)
             ->first();
+    }
+
+    /**
+     * @param string $name
+     * @return Builder|Model|Team
+     */
+    public static function getTeamByName(string $name): Model|Builder|Team
+    {
+        return self::query()
+            ->where('name', $name)
+            ->first();
+    }
+
+    public static function getAllTeamsName(): array
+    {
+        return self::query()->get(['name'])->toArray()[0];
     }
 }

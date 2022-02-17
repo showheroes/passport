@@ -3,6 +3,7 @@
 namespace ShowHeroes\Passport\Http\Controllers\Api\Users;
 
 use ShowHeroes\Passport\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
 use ShowHeroes\Passport\Http\Requests\Api\ApiRequest;
 use ShowHeroes\Passport\Http\Controllers\Api\ApiController;
 use EvgenyL\RestAPICore\Http\Responses\FormattedJSONResponse;
@@ -54,9 +55,9 @@ class UsersApiController extends ApiController
      * @param int $id
      * @param ApiRequest $request
      * @return FormattedJsonResponse
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      */
-    public function show($id, ApiRequest $request)
+    public function show(int $id, ApiRequest $request): FormattedJSONResponse
     {
         /** @var User $model */
         $model = User::withTrashed()->findOrFail($id);
@@ -97,9 +98,8 @@ class UsersApiController extends ApiController
      *
      * @param ApiRequest $request
      * @return FormattedJsonResponse
-     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function show_current(ApiRequest $request)
+    public function show_current(ApiRequest $request): FormattedJSONResponse
     {
         /** @var User $model */
         $model = $request->user();

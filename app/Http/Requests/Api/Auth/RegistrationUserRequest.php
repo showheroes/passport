@@ -2,19 +2,33 @@
 
 namespace ShowHeroes\Passport\Http\Requests\Api\Auth;
 
-use App\Http\Requests\Request;
+use JetBrains\PhpStorm\ArrayShape;
+use ShowHeroes\Passport\Models\Teams\Team;
+use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * Class RegistrationUserRequest
  * @package ShowHeroes\Passport\Http\Requests\Api\Auth
  */
-class RegistrationUserRequest extends Request
+class RegistrationUserRequest extends FormRequest
 {
-    public function rules(): array
+    /**
+     * @return string[]
+     */
+    #[ArrayShape(
+        [
+            'team' => "string",
+            'name' => "string",
+            'email' => "string",
+            'password' => "string"]
+    )] public function rules(): array
     {
         return [
-            'email' => 'required|string|email|',
-            'password' => 'required|string|min:6'
+            'team' => 'required|string|in:' .
+                implode(',', array_keys(array_flip(Team::getAllTeamsName()))),
+            'name' => 'required|min:4',
+            'email' => 'required|string|email|unique:users,email',
+            'password' => 'required|string|min:8'
         ];
     }
 
@@ -23,11 +37,32 @@ class RegistrationUserRequest extends Request
      *
      * @return array
      */
-    public function messages()
+    #[ArrayShape(['shortcut.email' => "string", 'shortcut.min' => "string"])] public function messages(): array
     {
         return [
-            'shortcut.email' => 'Email :attribute is not valid.',
-            'shortcut.min' => 'Password :attribute should has min 6 digits.',
+            'email.email' => 'Email :attribute is not valid.',
+            'password.min' => 'Password :attribute should has min 6 digits.',
+            'email.unique' => 'User :attribute already exists.',
         ];
+    }
+
+    public function getTeam()
+    {
+        return $this->get('team');
+    }
+
+    public function getName()
+    {
+        return $this->get('name');
+    }
+
+    public function getEmail()
+    {
+        return $this->get('email');
+    }
+
+    public function getPass()
+    {
+        return $this->get('password');
     }
 }

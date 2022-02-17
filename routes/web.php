@@ -20,28 +20,9 @@ Route::group(
 
     /** @var \Illuminate\Routing\Router $router */
     $router->get(
-        '/', function () {
-        return redirect('login');
-    });
+        '/',
+        function () {
+        //    return redirect('login');
+        }
+    );
 });
-
-Route::middleware(['auth:sanctum', 'verified'])->get(
-    '/dashboard',
-    function () {
-        return view('dashboard');
-    }
-)->name('dashboard');
-
-// Ad Server user management API
-Route::group(
-    [
-        'middleware' => ['auth:api', 'CORS'],
-        'prefix' => 'v1',
-        'namespace' => 'Api'
-    ],
-    function ($router) {
-        /** @var \Illuminate\Routing\Router $router */
-        $router->get('oauth/user', 'OAuthUserController@show');
-
-    }
-);

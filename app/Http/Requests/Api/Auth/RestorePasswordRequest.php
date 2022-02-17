@@ -2,19 +2,22 @@
 
 namespace ShowHeroes\Passport\Http\Requests\Api\Auth;
 
-use App\Http\Requests\Request;
+use JetBrains\PhpStorm\ArrayShape;
+use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * Class RestorePasswordRequest
  * @package ShowHeroes\Passport\Http\Requests\Api\Auth
  */
-class RestorePasswordRequest extends Request
+class RestorePasswordRequest extends FormRequest
 {
-    public function rules(): array
+    /**
+     * @return string[]
+     */
+    #[ArrayShape(['email' => "string"])] public function rules(): array
     {
         return [
-            'email' => 'required|string|email|',
-            'password' => 'required|string|min:6'
+            'email' => 'required|string|email',
         ];
     }
 
@@ -23,11 +26,15 @@ class RestorePasswordRequest extends Request
      *
      * @return array
      */
-    public function messages()
+    #[ArrayShape(['shortcut.email' => "string"])] public function messages(): array
     {
         return [
             'shortcut.email' => 'Email :attribute is not valid.',
-            'shortcut.min' => 'Password :attribute should has min 6 digits.',
         ];
+    }
+
+    public function getEmail()
+    {
+        return $this->get('email');
     }
 }

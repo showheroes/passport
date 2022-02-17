@@ -2,18 +2,20 @@
 
 namespace ShowHeroes\Passport\Http\Requests\Api\Auth;
 
-use App\Http\Requests\Request;
+use JetBrains\PhpStorm\ArrayShape;
+use ShowHeroes\Passport\Http\Requests\Api\ApiRequest;
 
 /**
  * Class SighInInUserRequest
  * @package ShowHeroes\Passport\Http\Requests\Api\Auth
  */
-class SighInInUserRequest extends Request
+class SighInInUserRequest extends ApiRequest
 {
-    public function rules(): array
+    #[ArrayShape(['email' => "string", 'password' => "string"])] public function rules(): array
     {
         return [
             'email' => 'required|string|email|',
+            'password' => 'required|string|min:6'
         ];
     }
 
@@ -22,10 +24,21 @@ class SighInInUserRequest extends Request
      *
      * @return array
      */
-    public function messages()
+    #[ArrayShape(['shortcut.email' => "string", 'shortcut.min' => "string"])] public function messages(): array
     {
         return [
             'shortcut.email' => 'Email :attribute is not valid.',
+            'shortcut.min' => 'Password :attribute should has min 6 digits.',
         ];
+    }
+
+    public function getPass()
+    {
+        return $this->get('password');
+    }
+
+    public function getEmail()
+    {
+        return $this->get('email');
     }
 }

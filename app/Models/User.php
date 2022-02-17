@@ -4,10 +4,11 @@ namespace ShowHeroes\Passport\Models;
 
 use Carbon\Carbon;
 use JetBrains\PhpStorm\Pure;
+use ShowHeroes\Constants\Locale;
 use JetBrains\PhpStorm\ArrayShape;
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\Model;
 use Laravel\Jetstream\HasProfilePhoto;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
 use ShowHeroes\Passport\Models\Teams\Team;
@@ -32,7 +33,7 @@ use ShowHeroes\Passport\Models\GoogleEntities\GoogleAuth;
  * @property integer $level             Access level.
  * @property boolean $is_blocked        Is user was blocked.
  * @property array $meta_data
- * @property integer|null $default_locale {@see \VideoLibrary\Models\Locale}
+ * @property integer|null $default_locale @todo:relation to new entity for locales
  *
  * @property string $password
  *
