@@ -3,6 +3,7 @@
 namespace ShowHeroes\Passport\Models\Teams;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use JetBrains\PhpStorm\ArrayShape;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Routing\UrlGenerator;
@@ -34,6 +35,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  */
 class TeamSettings extends Model
 {
+    use HasFactory;
+
     public const PRODUCT_IFACTORY = 'ifactory';
     public const PRODUCT_ADHERO = 'adhero';
     public const PRODUCT_APOLLO = 'apollo';

@@ -2,11 +2,11 @@
 
 namespace Database\Factories;
 
-use ShowHeroes\Passport\Models\Teams\Team;
-use ShowHeroes\Passport\Models\User;
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use Laravel\Jetstream\Features;
+use ShowHeroes\Passport\Models\User;
+use ShowHeroes\Passport\Models\Teams\Team;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UserFactory extends Factory
 {
