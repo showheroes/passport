@@ -4,13 +4,13 @@ namespace ShowHeroes\Passport\Http\Requests\Api\Auth;
 
 use JetBrains\PhpStorm\ArrayShape;
 use ShowHeroes\Passport\Models\Teams\Team;
-use Illuminate\Foundation\Http\FormRequest;
+use ShowHeroes\Passport\Http\Requests\Api\ApiRequest;
 
 /**
  * Class RegistrationUserRequest
  * @package ShowHeroes\Passport\Http\Requests\Api\Auth
  */
-class RegistrationUserRequest extends FormRequest
+class RegistrationUserRequest extends ApiRequest
 {
     /**
      * @return string[]
@@ -20,7 +20,8 @@ class RegistrationUserRequest extends FormRequest
             'team' => "string",
             'name' => "string",
             'email' => "string",
-            'password' => "string"]
+            'password' => "string"
+        ]
     )] public function rules(): array
     {
         return [

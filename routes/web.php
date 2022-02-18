@@ -14,15 +14,30 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(
-    ['middleware' => ['guest']], function ($router) {
-    Route::get('auth/google/login', 'Auth\GoogleReportController@redirect_to_google_provider')->middleware(['guest'])->name('web.auth.google.login');
-    Route::get('auth/google/callback', 'Auth\GoogleReportController@handle_google_provider_callback')->middleware(['guest'])->name('web.auth.google.callback');
+    ['middleware' => ['guest']],
+    function ($router) {
+        //Google auth
+        Route::get(
+            'auth/google/login',
+            'Auth\GoogleReportController@redirect_to_google_provider'
+        )
+            ->middleware(['guest'])
+            ->name('web.auth.google.login');
 
-    /** @var \Illuminate\Routing\Router $router */
-    $router->get(
-        '/',
-        function () {
-        //    return redirect('login');
-        }
-    );
-});
+        Route::get(
+            'auth/google/callback',
+            'Auth\GoogleReportController@handle_google_provider_callback'
+        )
+            ->middleware(['guest'])
+            ->name('web.auth.google.callback');
+
+
+        /** @var \Illuminate\Routing\Router $router */
+        $router->get(
+            '/',
+            function () {
+                return redirect('login');
+            }
+        );
+    }
+);

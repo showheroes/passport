@@ -3,14 +3,15 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/login', 'Api\Auth\PassportAuthController@signin');
-Route::post('/logout', 'Api\Auth\PassportAuthController@signout');
+Route::group(['middleware' => ['cors']], function () {
+    Route::post('/login', 'Api\Auth\ApiUserAuthController@signin');
+    Route::post('/register', 'Api\Auth\ApiUserAuthController@register');
+});
 
-Route::middleware('auth:api')
-    ->prefix('v1')
+Route::middleware('throttle:api')
     ->group(
         function ($router) {
-            Route::post('/register', 'Api\Auth\PassportAuthController@register');
+            Route::post('/logout', 'Api\Auth\ApiUserAuthController@signout');
 
             $router->get('users/{id}', 'Api\Users\UsersApiController@show')->where('id', '[0-9]+');
             $router->get('users/current', 'Api\Users\UsersApiController@show_current');
