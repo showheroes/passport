@@ -5,6 +5,7 @@ namespace ShowHeroes\Passport\Models;
 use JetBrains\PhpStorm\Pure;
 use InvalidArgumentException;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Jetstream\Jetstream;
 use ShowHeroes\Passport\Models\Teams\Team;
 use ShowHeroes\Passport\Models\Teams\Membership;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -28,7 +29,7 @@ trait CanJoinTeams
     /**
      * Get all of the teams that the user belongs to.
      */
-    public function teams(): BelongsToMany
+    public function passportTeams(): BelongsToMany
     {
         return $this->belongsToMany(
             Team::class,
@@ -99,7 +100,7 @@ trait CanJoinTeams
      */
     public function getCurrentTeamAttribute(): ?Model
     {
-        return $this->currentTeam();
+        return $this->passportCurrentTeam();
     }
 
     /**
@@ -107,7 +108,7 @@ trait CanJoinTeams
      *
      * @return Model|null
      */
-    public function currentTeam(): ?Model
+    public function passportCurrentTeam(): ?Model
     {
         if (is_null($this->current_team_id) && $this->hasTeams()) {
             $this->switchToTeam($this->teams->first());

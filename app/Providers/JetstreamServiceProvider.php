@@ -43,7 +43,7 @@ class JetstreamServiceProvider extends ServiceProvider
 
         Jetstream::useUserModel('ShowHeroes\Passport\Models\User');
         Jetstream::useTeamModel('ShowHeroes\Passport\Models\Teams\Team');
-       // Jetstream::useMembershipModel('ShowHeroes\Passport\Models\Teams\Membership');
+        Jetstream::useMembershipModel('ShowHeroes\Passport\Models\Teams\Membership');
       //  Jetstream::useTeamInvitationModel('ShowHeroes\Passport\Models\Teams\TeamInvitation');
     }
 

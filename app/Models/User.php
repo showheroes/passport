@@ -4,6 +4,7 @@ namespace ShowHeroes\Passport\Models;
 
 use Carbon\Carbon;
 use JetBrains\PhpStorm\Pure;
+use Laravel\Jetstream\HasTeams;
 use ShowHeroes\Constants\Locale;
 use JetBrains\PhpStorm\ArrayShape;
 use Laravel\Sanctum\HasApiTokens;
@@ -56,6 +57,7 @@ class User extends Authenticatable
     use CanJoinTeams;
     use TwoFactorAuthenticatable;
     use SoftDeletes;
+    use HasTeams;
     use HasApiTokens;
     use Notifiable;
 
@@ -193,7 +195,7 @@ class User extends Authenticatable
 
     public function ownedTeams(): BelongsToMany
     {
-        return $this->teams()->where('role', 'owner');
+        return $this->passportTeams()->where('role', 'owner');
     }
 
     #[Pure] public function isGhost(): bool
@@ -215,7 +217,7 @@ class User extends Authenticatable
     {
         $locale = $this->default_locale;
         if ($locale === null) {
-            $team = $this->currentTeam();
+            $team = $this->passportCurrentTeam();
 
             if ($team) {
                 $locale = $team->getDefaultLocale();

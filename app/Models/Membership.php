@@ -1,6 +1,6 @@
 <?php
 
-namespace ShowHeroes\Passport\Models\Teams;
+namespace ShowHeroes\Passport\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -8,7 +8,7 @@ use Laravel\Jetstream\Membership as JetstreamMembership;
 
 /**
  * Class Membership
- * @package ShowHeroes\Passport\Models\Teams
+ * @package ShowHeroes\Passport\Models
  *
  * @property integer $id
  * @property integer $team_id

@@ -6,7 +6,7 @@ use Illuminate\Support\Str;
 use ShowHeroes\Passport\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use ShowHeroes\Passport\Models\Teams\Membership;
+use ShowHeroes\Passport\Models\Membership;
 use ShowHeroes\Passport\Models\Teams\TeamSettings;
 use ShowHeroes\Passport\Exceptions\Auth\LoginAuthorisation;
 
