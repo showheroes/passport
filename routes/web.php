@@ -36,8 +36,12 @@ Route::group(
         $router->get(
             '/',
             function () {
-                return redirect('login');
+                return redirect('dashboard');
             }
         );
+
+        $router->get('login', '\ShowHeroes\Passport\Http\Controllers\OAuthController@getLogin')->name('web.login');
+        $router->get('oauth/login/google', '\ShowHeroes\Passport\Http\Controllers\OAuthController@redirectToGoogle')->name('web.oauth.login');
+        $router->get('oauth/login/google/callback', '\ShowHeroes\Passport\Http\Controllers\OAuthController@handleGoogleCallback');
     }
 );
