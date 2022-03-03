@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\Teams;
 
 use ShowHeroes\Passport\Models\Teams\Team;
 use ShowHeroes\Passport\Models\User;

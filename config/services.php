@@ -48,5 +48,12 @@ return [
     'allow_domains' => [
         'showheroes.com',
         'showheroes-group.com'
+    ],
+
+    'default_user' => [
+        'name' => env('SH_USER_NAME', 'SH'),
+        'email' => env('SH_USER_EMAIL', 'tech@showheroes-group.com'),
+        'password' => env('SH_USER_PASSWORD', 'asdewq13'),
+        'team_name' => env('SH_USER_TEAM_NAME', 'ShowHeroes'),
     ]
 ];
