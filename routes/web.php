@@ -45,3 +45,9 @@ Route::group(
         $router->get('oauth/login/google/callback', '\ShowHeroes\Passport\Http\Controllers\OAuthController@handleGoogleCallback');
     }
 );
+
+
+Route::middleware(['auth:sanctum', 'verified'])->get(
+    '/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');

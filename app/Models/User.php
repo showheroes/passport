@@ -30,6 +30,7 @@ use ShowHeroes\Passport\Models\GoogleEntities\GoogleAuth;
  * @property string $photo_url
  * @property integer $current_team_id
  * @property boolean $email_verified
+ * @property string $profile_photo_url
  * @property integer $level             Access level.
  * @property boolean $is_blocked        Is user was blocked.
  * @property array $meta_data
@@ -100,7 +101,16 @@ class User extends Authenticatable
         'card_last_four',
         'card_country',
         'meta_data',
-        'level',
+        'level'
+    ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'profile_photo_url',
     ];
 
     /**
