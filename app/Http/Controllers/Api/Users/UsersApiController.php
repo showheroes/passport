@@ -2,6 +2,8 @@
 
 namespace ShowHeroes\Passport\Http\Controllers\Api\Users;
 
+use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Support\Facades\Auth;
 use ShowHeroes\Passport\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use ShowHeroes\Passport\Http\Requests\Api\ApiRequest;
@@ -99,10 +101,10 @@ class UsersApiController extends ApiController
      * @param ApiRequest $request
      * @return FormattedJsonResponse
      */
-    public function show_current(ApiRequest $request): FormattedJSONResponse
+    public function show_current(Guard $guard, ApiRequest $request): FormattedJSONResponse
     {
         /** @var User $model */
-        $model = $request->user();
+        dd($guard->user());
         $data = $this->convertModelJsonData($request, $model);
         return FormattedJsonResponse::show($data);
     }

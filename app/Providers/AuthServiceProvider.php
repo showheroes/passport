@@ -31,8 +31,13 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        if (! $this->app->routesAreCached()) {
+        if (!$this->app->routesAreCached()) {
             Passport::routes();
+            Passport::tokensCan(
+                [
+                    'user_info' => 'User information (name, team, email, avatar)',
+                ]
+            );
         }
     }
 }

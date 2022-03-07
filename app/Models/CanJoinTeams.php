@@ -4,10 +4,10 @@ namespace ShowHeroes\Passport\Models;
 
 use JetBrains\PhpStorm\Pure;
 use InvalidArgumentException;
-use Illuminate\Database\Eloquent\Model;
 use Laravel\Jetstream\Jetstream;
+use ShowHeroes\Passport\Models\Teams;
+use Illuminate\Database\Eloquent\Model;
 use ShowHeroes\Passport\Models\Teams\Team;
-use ShowHeroes\Passport\Models\Teams\Membership;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
