@@ -12,25 +12,15 @@ Route::group(
     }
 );
 
-Route::middleware('throttle:api')
+Route::middleware(['auth:sanctum'])
     ->group(
         function ($router) {
             Route::post('/logout', 'Api\Auth\ApiUserAuthController@signout');
             $router->get('users/{id}', 'Api\Users\UsersApiController@show')->where('id', '[0-9]+');
-            $router->get('users/current', 'Api\Users\UsersApiController@show_current');
         }
     );
 
-
-// Ad Server user management API
-Route::group(
-    [
-        'middleware' => ['auth:api', 'cors'],
-        'prefix' => 'v1',
-        'namespace' => 'Api'
-    ],
-    static function ($router) {
-        /** @var Router $router */
-        $router->get('users/current', '\ShowHeroes\Passport\Http\Controllers\Api\Users\UsersApiController@show_current');
-    }
-);
+Route::middleware(['middleware' => 'client_credentials', 'auth:api'])->group(
+    function ($router) {
+        $router->get('users/current', 'Api\Users\UsersApiController@show_current');
+    });

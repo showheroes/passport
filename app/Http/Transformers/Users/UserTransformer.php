@@ -36,11 +36,17 @@ class UserTransformer extends TransformerAbstract
      */
     public function transform(User $user)
     {
+        $team = $user->passportCurrentTeam();
         $data = [
             'id'    => $user->id,
             'name'  => $user->name,
             'email' => $user->email,
+            'team_id' => $team->id,
+            'team_name' => $team->name,
+            'team_slug' => '',
+            'avatar' => $user->photo_url
         ];
+
         return $data;
     }
 

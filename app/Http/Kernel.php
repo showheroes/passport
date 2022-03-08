@@ -65,5 +65,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'cors' => \ShowHeroes\Passport\Http\Middleware\CorsRequest::class,
+        'client_credentials' => \Laravel\Passport\Http\Middleware\CheckClientCredentials::class
     ];
 }

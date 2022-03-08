@@ -104,8 +104,9 @@ class UsersApiController extends ApiController
     public function show_current(Guard $guard, ApiRequest $request): FormattedJSONResponse
     {
         /** @var User $model */
-        dd($guard->user());
+        $model = $guard->user();
         $data = $this->convertModelJsonData($request, $model);
+
         return FormattedJsonResponse::show($data);
     }
 }

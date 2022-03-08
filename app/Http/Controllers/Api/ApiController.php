@@ -2,8 +2,8 @@
 
 namespace ShowHeroes\Passport\Http\Controllers\Api;
 
-use EvgenyL\RestAPICore\Http\Controllers\API\TransformsResponses;
 use ShowHeroes\Passport\Http\Controllers\Controller;
+use EvgenyL\RestAPICore\Http\Controllers\API\TransformsResponses;
 
 /**
  * @OA\Info(
