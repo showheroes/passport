@@ -3,11 +3,17 @@
 namespace ShowHeroes\Passport\Exceptions;
 
 use Throwable;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Auth\AuthenticationException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use EvgenyL\RestAPICore\Http\Exceptions\APIJSONHandlerTrait;
+use ShowHeroes\SspMapping\Exceptions\SentryReportableException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -39,11 +45,13 @@ class Handler extends ExceptionHandler
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
-            //
-        });
+        $this->reportable(
+            static function (Throwable $e) {
+                //
+            }
+        );
     }
 
     public function render($request, Throwable $exception)
@@ -54,7 +62,7 @@ class Handler extends ExceptionHandler
         return parent::render($request, $exception);
     }
 
-    protected function prepareException(Throwable $e)
+    protected function prepareException(Throwable $e): HttpException|NotFoundHttpException|Throwable|AccessDeniedHttpException
     {
         if ($e instanceof ModelNotFoundException) {
             $e = new NotFoundHttpException('Not found.', $e);
@@ -67,16 +75,44 @@ class Handler extends ExceptionHandler
     /**
      * Convert an authentication exception into an unauthenticated response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Auth\AuthenticationException  $exception
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param AuthenticationException $exception
+     * @return JsonResponse|RedirectResponse
      */
-    protected function unauthenticated($request, AuthenticationException $exception)
+    protected function unauthenticated($request, AuthenticationException $exception): JsonResponse|RedirectResponse
     {
         if ($request->expectsJson()) {
-            return response()->json(['error' => 'Unauthenticated.'], 401);
+            return response()
+                ->json(
+                    [
+                        'error' => 'Unauthenticated.'
+                    ],
+                    401
+                );
         }
 
         return redirect()->guest('login');
+    }
+
+    /**
+     * Report or log an exception.
+     *
+     * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
+     *
+     * @param Throwable $e
+     * @return void
+     * @throws Throwable
+     */
+    public function report(Throwable $e):void
+    {
+        if ($this->shouldReport($e)) {
+            if (!$e instanceof SentryReportableException
+                || $e->shouldBeReportedToSentry()
+            ) {
+                app('sentry')->captureException($e);
+            }
+        }
+
+        parent::report($e);
     }
 }

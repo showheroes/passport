@@ -9,7 +9,7 @@
         "ext-json": "*",
         "darkaonline/l5-swagger": "^8.0",
         "doctrine/dbal": "^3.2",
-        "evgeny-l/rest-api-core": "^0.6.5",
+        "evgeny-l/rest-api-core": "^0.8.0",
         "fruitcake/laravel-cors": "^2.0",
         "google/apiclient": "^2.12",
         "guzzlehttp/guzzle": "^7.0.1",
