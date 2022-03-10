@@ -32,9 +32,9 @@ class ApiUserAuthController extends ApiController
 
     /**
      * @param RegistrationUserRequest $request
-     * @return array|Response|Application|ResponseFactory|null
+     * @return array|FormattedJSONResponse|Application|ResponseFactory|Response
      */
-    public function register(RegistrationUserRequest $request): array|Response|Application|ResponseFactory|null
+    public function register(RegistrationUserRequest $request): Response|array|FormattedJSONResponse|Application|ResponseFactory
     {
         try {
             return $this->gateway->registerUser($request);
@@ -48,9 +48,9 @@ class ApiUserAuthController extends ApiController
 
     /**
      * @param SighInInUserRequest $request
-     * @return Application|ResponseFactory|Response
+     * @return FormattedJSONResponse|Application|ResponseFactory|Response
      */
-    public function signin(SighInInUserRequest $request): Application|ResponseFactory|Response
+    public function signin(SighInInUserRequest $request): Response|FormattedJSONResponse|Application|ResponseFactory
     {
         try {
             return $this->gateway->signinUser($request);
