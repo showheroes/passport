@@ -4,12 +4,14 @@ namespace ShowHeroes\Passport\Exceptions;
 
 use Throwable;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Auth\AuthenticationException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use EvgenyL\RestAPICore\Http\Exceptions\APIJSONHandlerTrait;
+use EvgenyL\RestAPICore\Http\Responses\FormattedJSONResponse;
 use ShowHeroes\SspMapping\Exceptions\SentryReportableException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -54,7 +56,7 @@ class Handler extends ExceptionHandler
         );
     }
 
-    public function render($request, Throwable $exception)
+    public function render($request, Throwable $exception): Response|JsonResponse|FormattedJSONResponse|\Symfony\Component\HttpFoundation\Response
     {
         if ($request->expectsJson()) {
             return $this->handleJSONResponse($request, $exception);
